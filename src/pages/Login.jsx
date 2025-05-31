@@ -2,7 +2,6 @@ import { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import { authService } from '../services/api';
-import '../styles/Auth.css';
 
 const Login = () => {
   const navigate = useNavigate();
@@ -32,12 +31,12 @@ const Login = () => {
   };
 
   return (
-    <div className="auth-container">
-      <div className="auth-box">
-        <h2>Login</h2>
-        <form onSubmit={handleSubmit}>
-          <div className="form-group">
-            <label htmlFor="email">Email</label>
+    <div className="min-h-screen bg-navy flex items-center justify-center px-4">
+      <div className="bg-white rounded-lg shadow-xl p-8 w-full max-w-md">
+        <h2 className="text-3xl font-bold text-navy mb-6 text-center">Login</h2>
+        <form onSubmit={handleSubmit} className="space-y-6">
+          <div className="space-y-2">
+            <label htmlFor="email" className="block text-sm font-medium text-gray-700">Email</label>
             <input
               type="email"
               id="email"
@@ -45,10 +44,11 @@ const Login = () => {
               value={formData.email}
               onChange={handleChange}
               required
+              className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-navy focus:border-navy"
             />
           </div>
-          <div className="form-group">
-            <label htmlFor="password">Password</label>
+          <div className="space-y-2">
+            <label htmlFor="password" className="block text-sm font-medium text-gray-700">Password</label>
             <input
               type="password"
               id="password"
@@ -56,12 +56,21 @@ const Login = () => {
               value={formData.password}
               onChange={handleChange}
               required
+              className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-navy focus:border-navy"
             />
           </div>
-          <button type="submit" className="auth-button">Login</button>
+          <button 
+            type="submit" 
+            className="w-full bg-navy text-white py-2 px-4 rounded-md hover:bg-navy-dark transition-colors duration-200"
+          >
+            Login
+          </button>
         </form>
-        <p className="auth-link">
-          Don't have an account? <Link to="/register">Register</Link>
+        <p className="mt-4 text-center text-gray-600">
+          Don't have an account?{' '}
+          <Link to="/register" className="text-navy hover:text-navy-dark font-medium">
+            Register
+          </Link>
         </p>
       </div>
     </div>

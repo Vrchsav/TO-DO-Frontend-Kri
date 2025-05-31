@@ -5,7 +5,6 @@ import Login from './pages/Login';
 import Register from './pages/Register';
 import TodoList from './pages/TodoList';
 import PrivateRoute from './components/PrivateRoute';
-import './App.css';
 
 function App() {
   return (

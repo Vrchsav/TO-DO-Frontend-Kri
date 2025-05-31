@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react';
 import { todoService } from '../services/api';
-import '../styles/TodoList.css';
 
 const TodoList = () => {
   const [todos, setTodos] = useState([]);
@@ -70,67 +69,117 @@ const TodoList = () => {
   };
 
   if (loading) {
-    return <div className="loading">Loading todos...</div>;
+    return (
+      <div className="min-h-screen bg-navy flex items-center justify-center">
+        <div className="text-white text-xl">Loading todos...</div>
+      </div>
+    );
   }
 
   return (
-    <div className="todo-container">
-      <h1>Todo List</h1>
-      
-      {error && <div className="error-message">{error}</div>}
-
-      <form onSubmit={handleSubmit} className="todo-form">
-        <input
-          type="text"
-          name="title"
-          value={newTodo.title}
-          onChange={handleInputChange}
-          placeholder="Todo title"
-          required
-        />
-        <textarea
-          name="description"
-          value={newTodo.description}
-          onChange={handleInputChange}
-          placeholder="Todo description"
-        />
-        <select
-          name="priority"
-          value={newTodo.priority}
-          onChange={handleInputChange}
-        >
-          <option value="low">Low</option>
-          <option value="medium">Medium</option>
-          <option value="high">High</option>
-        </select>
-        <button type="submit">Add Todo</button>
-      </form>
-
-      <div className="todos-list">
-        {todos.length === 0 ? (
-          <p className="no-todos">No todos yet. Add one above!</p>
-        ) : (
-          todos.map(todo => (
-            <div key={todo._id} className={`todo-item ${todo.completed ? 'completed' : ''}`}>
-              <div className="todo-content">
-                <h3>{todo.title}</h3>
-                <p>{todo.description}</p>
-                <span className={`priority ${todo.priority}`}>{todo.priority}</span>
-              </div>
-              <div className="todo-actions">
-                <button
-                  onClick={() => handleToggleComplete(todo._id, todo.completed)}
-                  className={todo.completed ? 'completed' : ''}
-                >
-                  {todo.completed ? 'Undo' : 'Complete'}
-                </button>
-                <button onClick={() => handleDelete(todo._id)} className="delete">
-                  Delete
-                </button>
-              </div>
-            </div>
-          ))
+    <div className="min-h-screen bg-navy p-8">
+      <div className="max-w-4xl mx-auto">
+        <h1 className="text-4xl font-bold text-white mb-8">Todo List</h1>
+        
+        {error && (
+          <div className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded mb-4">
+            {error}
+          </div>
         )}
+
+        <form onSubmit={handleSubmit} className="bg-white rounded-lg shadow-lg p-6 mb-8">
+          <div className="space-y-4">
+            <input
+              type="text"
+              name="title"
+              value={newTodo.title}
+              onChange={handleInputChange}
+              placeholder="Todo title"
+              required
+              className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-navy focus:border-navy"
+            />
+            <textarea
+              name="description"
+              value={newTodo.description}
+              onChange={handleInputChange}
+              placeholder="Todo description"
+              className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-navy focus:border-navy"
+            />
+            <select
+              name="priority"
+              value={newTodo.priority}
+              onChange={handleInputChange}
+              className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-navy focus:border-navy"
+            >
+              <option value="low">Low</option>
+              <option value="medium">Medium</option>
+              <option value="high">High</option>
+            </select>
+            <button 
+              type="submit"
+              className="w-full bg-navy text-white py-2 px-4 rounded-md hover:bg-navy-dark transition-colors duration-200"
+            >
+              Add Todo
+            </button>
+          </div>
+        </form>
+
+        <div className="space-y-4">
+          {todos.length === 0 ? (
+            <p className="text-white text-center text-lg">No todos yet. Add one above!</p>
+          ) : (
+            todos.map(todo => (
+              <div 
+                key={todo._id} 
+                className={`bg-white rounded-lg shadow-lg p-6 ${
+                  todo.completed ? 'opacity-75' : ''
+                }`}
+              >
+                <div className="flex justify-between items-start">
+                  <div className="flex-1">
+                    <h3 className={`text-xl font-semibold ${
+                      todo.completed ? 'line-through text-gray-500' : 'text-gray-900'
+                    }`}>
+                      {todo.title}
+                    </h3>
+                    <p className={`mt-2 ${
+                      todo.completed ? 'text-gray-500' : 'text-gray-600'
+                    }`}>
+                      {todo.description}
+                    </p>
+                    <span className={`inline-block mt-2 px-3 py-1 rounded-full text-sm font-medium ${
+                      todo.priority === 'high' 
+                        ? 'bg-red-100 text-red-800'
+                        : todo.priority === 'medium'
+                        ? 'bg-yellow-100 text-yellow-800'
+                        : 'bg-green-100 text-green-800'
+                    }`}>
+                      {todo.priority}
+                    </span>
+                  </div>
+                  <div className="flex space-x-2">
+                    <button
+                      onClick={() => handleToggleComplete(todo._id, todo.completed)}
+                      className={`px-4 py-2 rounded-md ${
+                        todo.completed
+                          ? 'bg-gray-500 text-white hover:bg-gray-600'
+                          : 'bg-green-500 text-white hover:bg-green-600'
+                      } transition-colors duration-200`}
+                    >
+                      {todo.completed ? 'Undo' : 'Complete'}
+                    </button>
+                    <button 
+                      onClick={() => handleDelete(todo._id)}
+                      className="px-4 py-2 bg-red-500 text-white rounded-md hover:bg-red-600 transition-colors duration-200"
+                    >
+                      Delete
+                    </button>
+                  </div>
+                </div>
+              </div>
+            ))
+          )}
+        </div>
       </div>
     </div>
   );
